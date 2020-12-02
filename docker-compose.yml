@@ -9,3 +9,30 @@ services:
     working_dir: /frontend/client/
     volumes:
       - ./:/frontend
+    networks:
+      - network
+  api:
+    image: ruby:2.5.7
+    command: sh -c "gem install bundler && bundle install && rake db:create && rails db:migrate && rails server -p 3000 -b '0.0.0.0'"
+    working_dir: /api/api
+    volumes:
+      - ./api:/api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    env_file: ./docker/db_config.env
+    networks:
+      - network
+  db:
+    image: postgres:13-alpine
+    volumes: 
+      - db:/var/lib/postgresql/data
+    env_file: ./docker/db_config.env
+    networks:
+      - network
+
+volumes: 
+  db:
+networks: 
+  network:
