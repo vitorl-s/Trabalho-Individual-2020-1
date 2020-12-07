@@ -1,0 +1,38 @@
+image: ruby:2.5.7
+
+services:
+  - postgres:13-alpine
+
+variables:
+  POSTGRES_DB: ./docker/db_config.env
+  CONTAINER_IMAGE: docker-compose.yml
+
+stages:
+  - test
+  - build
+
+cache:
+  paths:
+    - .bundle
+    - vendor/ruby
+
+test:
+  stage: test
+
+  script:
+    - apt-get update -qy
+    - apt-get install -y nodejs
+    - gem install bundler
+    - bundle install
+    - cp .env.ci .env
+    - cp config/database.ci.yml config/database.yml
+    - bundle exec rake db:create || true
+    - bundle exec rake db:migrate
+
+build:
+  stage: build
+
+  image: docker:stable
+
+  script:
+    - docker-compose up --build
