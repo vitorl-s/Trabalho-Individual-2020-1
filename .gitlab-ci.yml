@@ -9,7 +9,7 @@ variables:
 
 stages:
   - build
-  - test
+  - test-front
 
 cache:
   paths:
@@ -29,7 +29,7 @@ build:
     - docker version
     - docker-compose --version
 
-test:
+test-front:
   stage: test
   script:
     - docker-compose run --rm frontend && yarn run test:unit
