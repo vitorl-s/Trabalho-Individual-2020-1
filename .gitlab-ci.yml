@@ -1,7 +1,11 @@
-image: ruby:2.5.7
+image: docker/compose:latest
 
 services:
   - postgres:13-alpine
+  - docker:dind
+before_script:
+  - docker version
+  - docker-compose --version
 
 variables:
   POSTGRES_DB: ./docker/db_config.env
@@ -19,17 +23,11 @@ cache:
 build:
   stage: build
 
-  services:
-    - docker:dind
-  image:
-    name: docker/compose:latest
   script:
     - docker-compose up --build -d
-  before_script:
-    - docker version
-    - docker-compose --version
 
 test-front:
   stage: test-front
   script:
+    - docker-compose up --build -d
     - docker-compose run --rm frontend && yarn run test:unit
