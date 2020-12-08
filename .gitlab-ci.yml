@@ -8,13 +8,26 @@ variables:
   CONTAINER_IMAGE: docker-compose.yml
 
 stages:
-  - test
   - build
+  - test
 
 cache:
   paths:
     - .bundle
     - vendor/ruby
+
+build:
+  stage: build
+
+  services:
+    - docker:dind
+  image:
+    name: docker/compose:latest
+  script:
+    - docker-compose up -d
+  before_script:
+    - docker version
+    - docker-compose --version
 
 test:
   stage: test
@@ -28,11 +41,3 @@ test:
     - cp config/database.ci.yml config/database.yml
     - bundle exec rake db:create || true
     - bundle exec rake db:migrate
-
-build:
-  stage: build
-
-  image: docker:stable
-
-  script:
-    - docker-compose up --build
