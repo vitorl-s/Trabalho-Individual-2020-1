@@ -12,7 +12,7 @@ variables:
   CONTAINER_IMAGE: docker-compose.yml
 
 stages:
-  - build
+  - build-front
   - test-front
 
 cache:
@@ -20,14 +20,14 @@ cache:
     - .bundle
     - vendor/ruby
 
-build:
-  stage: build
+build-front:
+  stage: build-front
 
   script:
     - docker-compose up --build -d
+    - docker-compose run --rm frontend && yarn && yarn run dev
 
 test-front:
   stage: test-front
   script:
-    - docker-compose up --build -d
-    - docker-compose run --rm frontend && yarn run test:unit
+    - yarn run test:unit
