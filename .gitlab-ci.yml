@@ -28,5 +28,7 @@ build-front:
 
 test-front:
   stage: test-front
+  before_script: 
+    - chmod +x client/scripts/front_tests.sh
   script:
-    - docker-compose run frontend ./scripts/front_tests.sh
+    - docker-compose run frontend sh -c "yarn install && yarn run test:unit"
