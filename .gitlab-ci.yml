@@ -28,16 +28,3 @@ build:
   before_script:
     - docker version
     - docker-compose --version
-
-test:
-  stage: test
-
-  script:
-    - apt-get update -qy
-    - apt-get install -y nodejs
-    - gem install bundler
-    - bundle install
-    - cp .env.ci .env
-    - cp config/database.ci.yml config/database.yml
-    - bundle exec rake db:create || true
-    - bundle exec rake db:migrate
