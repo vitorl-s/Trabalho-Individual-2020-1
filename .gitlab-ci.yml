@@ -30,6 +30,6 @@ build:
     - docker-compose --version
 
 test-front:
-  stage: test
+  stage: test-front
   script:
     - docker-compose run --rm frontend && yarn run test:unit
