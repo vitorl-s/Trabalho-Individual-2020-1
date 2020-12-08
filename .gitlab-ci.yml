@@ -24,7 +24,12 @@ build:
   image:
     name: docker/compose:latest
   script:
-    - docker-compose up -d
+    - docker-compose up --build -d
   before_script:
     - docker version
     - docker-compose --version
+
+test:
+  stage: test
+  script:
+    - docker-compose run --rm frontend && yarn run test:unit
