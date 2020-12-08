@@ -25,7 +25,7 @@ build-front:
 
   script:
     - docker-compose up --build -d
-    - docker-compose run frontend && yarn && yarn run dev
+    - docker-compose run frontend && yarn && yarn dev
 
 test-front:
   stage: test-front
