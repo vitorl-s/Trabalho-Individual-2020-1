@@ -25,9 +25,9 @@ build-front:
 
   script:
     - docker-compose up --build -d
-    - docker-compose run frontend && rm -rf yarn.lock && yarn && yarn build
+    - docker-compose run frontend rm -rf yarn.lock && yarn install && yarn build
 
 test-front:
   stage: test-front
   script:
-    - docker-compose run frontend && yarn run test:unit
+    - docker-compose run frontend yarn run test:unit
