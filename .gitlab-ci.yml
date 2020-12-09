@@ -1,7 +1,6 @@
 image: docker/compose:latest
 
 services:
-  - postgres:13-alpine
   - docker:dind
 before_script:
   - docker version
@@ -12,23 +11,21 @@ variables:
   CONTAINER_IMAGE: docker-compose.yml
 
 stages:
-  - build-front
+  - build
   - test-front
+  - test-back
 
-cache:
-  paths:
-    - .bundle
-    - vendor/ruby
-
-build-front:
-  stage: build-front
-
+build:
+  stage: build
   script:
     - docker-compose up --build -d
 
 test-front:
   stage: test-front
-  before_script: 
-    - chmod +x client/scripts/front_tests.sh
   script:
     - docker-compose run frontend sh -c "yarn install && yarn run test:unit"
+
+test-back:
+  stage: test-back
+  script:
+    - docker-compose run api sh -c "bundle exec rails test"
