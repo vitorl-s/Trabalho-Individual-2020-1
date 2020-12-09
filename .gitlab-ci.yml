@@ -28,4 +28,4 @@ test-front:
 test-back:
   stage: test-back
   script:
-    - docker-compose run api sh -c "bundle install && bundle exec rails test"
+    - docker-compose run api sh -c "gem install bundler && bundle install && bundle exec rails test"
