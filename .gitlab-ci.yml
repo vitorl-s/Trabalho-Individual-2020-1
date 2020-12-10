@@ -27,5 +27,10 @@ test-front:
 
 test-back:
   stage: test-back
+  before_script:
+    - gem install bundler 
+    - bundle install
+    - rake db:create 
+    - rails db:migrate
   script:
-    - docker-compose run api sh -c "gem install bundler && bundle install && rake db:create && rails db:migrate && bundle exec rails test"
+    - docker-compose run api sh -c "bundle exec rails test"
