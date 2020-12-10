@@ -1,5 +1,8 @@
 image: docker/compose:latest
 
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
 services:
   - docker:dind
 before_script:
@@ -14,6 +17,7 @@ stages:
   - build
   - test-front
   - test-back
+  - test
 
 build:
   stage: build
