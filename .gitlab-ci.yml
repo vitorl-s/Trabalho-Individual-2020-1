@@ -4,14 +4,10 @@ include:
   - template: Code-Quality.gitlab-ci.yml
 
 services:
-  - docker:dind
+  - docker:stable-dind
 before_script:
   - docker version
   - docker-compose --version
-
-variables:
-  POSTGRES_DB: ./docker/db_config.env
-  CONTAINER_IMAGE: docker-compose.yml
 
 stages:
   - build
@@ -37,6 +33,13 @@ test-back:
 code_quality:
   stage: test
   variables:
+    DOCKER_DRIVER: overlay2
     REPORT_FORMAT: html
   artifacts:
     paths: [gl-code-quality-report.html]
+  script:
+    - docker run
+      --env SOURCE_CODE="$PWD"
+      --volume "$PWD":/code
+      --volume /var/run/docker.sock:/var/run/docker.sock
+      "registry.gitlab.com/gitlab-org/security-products/codequality:12-3-stable" /code
