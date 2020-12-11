@@ -30,6 +30,7 @@ class Profile < ApplicationRecord
 
   def shrink_url(url)
     regex_short_urls = /(http:\/\/tinyurl\.com\/\w+)/
+    regex_short_https_urls = /(https:\/\/tinyurl\.com\/\w+)/
     regex_github_profile_url = /(github\.com\/\w+)/
     regex_github_image_url = /(githubusercontent\.com\/\w+)/
 
@@ -38,7 +39,7 @@ class Profile < ApplicationRecord
 
     elsif url.match(regex_github_profile_url) or url.match(regex_github_image_url)
       url = ShortURL.shorten(url, :tinyurl)
-    elsif url.match(regex_short_urls)
+    elsif url.match(regex_short_urls) or url.match(regex_short_https_urls)
       # avoid shrinking again on update if url isn't changed
     else
       url = ''  # force validation error
