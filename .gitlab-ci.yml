@@ -1,8 +1,5 @@
 image: docker/compose:latest
 
-include:
-  - template: Code-Quality.gitlab-ci.yml
-
 services:
   - docker:stable-dind
 before_script:
@@ -13,7 +10,6 @@ stages:
   - build
   - test-front
   - test-back
-  - test
 
 build:
   stage: build
@@ -29,17 +25,3 @@ test-back:
   stage: test-back
   script:
     - docker-compose run api sh -c "gem install bundler && bundle install && rake db:create && rails db:migrate && bundle exec rails test"
-
-code_quality:
-  stage: test
-  variables:
-    DOCKER_DRIVER: overlay2
-    REPORT_FORMAT: html
-  artifacts:
-    paths: [gl-code-quality-report.html]
-  script:
-    - docker run
-      --env SOURCE_CODE="$PWD"
-      --volume "$PWD":/api
-      --volume :/cache
-      "registry.gitlab.com/gitlab-org/security-products/codequality:12-3-stable" /api
