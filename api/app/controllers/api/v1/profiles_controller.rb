@@ -10,6 +10,14 @@ class Api::V1::ProfilesController < ApplicationController
     render json: @profile
   end
 
+  def show2
+    render json: @profile
+  end
+
+  def show3
+    render json: @profile
+  end
+
   def create
     @profile = Profile.new(profile_params)
 
@@ -23,6 +31,13 @@ class Api::V1::ProfilesController < ApplicationController
       else
         render json: @profile.errors, status: :unprocessable_entity
       end
+        if @profile.errors.key?('404')
+          # Profile does not exist on github
+          render json: { message: 'Profile not found on github!' },
+          status: :unprocessable_entity
+        else
+          render json: @profile.errors, status: :unprocessable_entity
+        end
     end
   end
 
