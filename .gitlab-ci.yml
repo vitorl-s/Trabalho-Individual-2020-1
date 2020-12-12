@@ -13,7 +13,7 @@ staging:
   type: deploy
   stage: staging
   script:
-    - docker-compose run api sh -c "gem install dpl && dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY"
+    - docker-compose run api sh -c "gem install dpl && git init dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY"
   only:
     - test_deploy
 
