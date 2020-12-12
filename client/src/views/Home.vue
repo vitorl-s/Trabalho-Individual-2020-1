@@ -33,7 +33,7 @@
             Github profile indexer
           </h1>
           <h2 class="text-h4 text-subtitle-1">
-            Find your favorite Github profiles here!
+            Find your favorite Github profiles here
           </h2>
         </div>
 
