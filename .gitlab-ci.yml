@@ -22,6 +22,7 @@ staging:
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
   only:
     - test_deploy
+
 build:
   stage: build
   script:
