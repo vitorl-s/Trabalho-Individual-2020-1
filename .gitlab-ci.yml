@@ -12,10 +12,8 @@ stages:
 staging:
   type: deploy
   stage: staging
-  image: ruby:2.5.7
   script:
-    - gem install dpl
-    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
+    - docker-compose run api sh -c "gem install dpl && dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY"
   only:
     - test_deploy
 
