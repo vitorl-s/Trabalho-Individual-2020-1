@@ -10,11 +10,18 @@ before_script:
   - gem install dpl
 
 stages:
+  - staging
   - build
   - test-front
   - test-back
-  - staging
 
+staging:
+  type: deploy
+  stage: staging
+  script:
+    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
+  only:
+    - test_deploy
 build:
   stage: build
   script:
@@ -25,16 +32,8 @@ test-front:
   script:
     - docker-compose run frontend sh -c "yarn install && yarn run test:unit"
 
+
 test-back:
   stage: test-back
   script:
     - docker-compose run api sh -c "gem install bundler && bundle install && rake db:create && rails db:migrate && bundle exec rails test"
-
-staging:
-  type: deploy
-  stage: staging
-  image: ruby:latest
-  script:
-    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
-  only:
-    - test_deploy
