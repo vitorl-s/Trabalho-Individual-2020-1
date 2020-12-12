@@ -5,11 +5,17 @@ services:
 before_script:
   - docker version
   - docker-compose --version
+  - echo "deb http://toolbelt.heroku.com/ubuntu ./" > /etc/apt/sources.list.d/heroku.list
+  - wget -O- https://toolbelt.heroku.com/apt/release.key | apt-key add -
+  - apt-get update
+  - apt-get install -y heroku-toolbelt
+  - gem install dpl
 
 stages:
   - build
   - test-front
   - test-back
+  - staging
 
 build:
   stage: build
@@ -25,3 +31,13 @@ test-back:
   stage: test-back
   script:
     - docker-compose run api sh -c "gem install bundler && bundle install && rake db:create && rails db:migrate && bundle exec rails test"
+
+staging:
+  stage: staging
+  variables:
+    HEROKU_API_KEY: $HEROKU_STAGING_API_KEY
+  script:
+    - dpl --provider=heroku --app=staging-formulariocontato --api-key=$HEROKU_API_KEY
+    - heroku run rake db:migrate --exit-code --app staging-formulariocontato
+  only:
+    - test_deploy
