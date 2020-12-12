@@ -10,10 +10,10 @@ before_script:
   - gem install dpl
 
 stages:
-  - staging
   - build
   - test-front
   - test-back
+  - staging
 
 build:
   stage: build
