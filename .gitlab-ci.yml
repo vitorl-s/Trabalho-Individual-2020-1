@@ -2,9 +2,6 @@ image: docker/compose:latest
 
 services:
   - docker:stable-dind
-before_script:
-  - apk update
-  - apk add ruby-dev
 
 stages:
   - staging
