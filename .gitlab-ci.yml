@@ -2,6 +2,10 @@ image: docker/compose:latest
 
 services:
   - docker:stable-dind
+before_script:
+  - apk update
+  - apk add ruby-dev
+  - gem install dpl
 
 stages:
   - staging
@@ -14,9 +18,6 @@ staging:
   stage: staging
   image: ruby:latest
   script:
-    - apk update
-    - apk add ruby-dev
-    - gem install dpl
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
   only:
     - test_deploy
