@@ -40,3 +40,12 @@ Já no backend, devemos executar:
 docker-compose run api bundle exec rails test
 ```
 
+## Integração Contínua
+
+A integração contínua do projeto foi feita utilizando o Gitlab CI, contendo as fases:
+
+- build
+- testes-frontend
+- testes-backend
+
+Cada stage está descrito no arquivo `.gitlab-ci.yml`. A integração com o Gitlab CI se dá através do espelhamento do repositório no Gitlab com esse repositório. Também foi utilizado o serviço de dind(Docker in Docker) do próprio Gitlab CI. Em relação à configuração dos pull requests, a cada commit executado na branch do PR, o pipeline é executado juntamente da coleta de métricas de qualidade do código, foi utilizado o Code Climate para a coleta de métricas. O PR só conseguirá ser merjado após a aprovação nas stages de build, testes e coleta de métricas de qualidade.
