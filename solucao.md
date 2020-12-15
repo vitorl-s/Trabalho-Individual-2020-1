@@ -32,7 +32,7 @@ Após a finalização do comando, as aplicações estarão rodando nas seguintes
 
 Para a execução de testes nos ambientes dockerizados acima devemos executar no frontend:
 ```
-docker-compose run frontend yarn install && yarn run test:unit
+docker-compose run frontend yarn run test:unit
 ```
 
 Já no backend, devemos executar:
