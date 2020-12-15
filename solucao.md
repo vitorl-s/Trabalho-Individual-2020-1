@@ -14,7 +14,7 @@ A **divisão** do projeto consistiu-se em **3 containers (frontend, backend e da
 .env na pasta `/docker` para a finalidade de configuração do database.
 
 Os containers da api e database foram inseridos em uma network, para facilitar a comunicação entre os containers, através de variáveis de ambiente definidas no arquivo
-`/docker/db_config.env`. Além disso, foi utilizado o volume db para armazenar o banco de dados.
+`/docker/db_config.env`. Além disso, foram utilizados os volumes db e gems, para armazenar respectivamente, o banco de dados e as gems da api.
 
 ### Executando o projeto
 
